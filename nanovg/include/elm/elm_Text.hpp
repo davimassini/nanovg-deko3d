@@ -1,9 +1,8 @@
 /**
- * Plutonium library
+ * Daydream library
  * @file elm_Text.hpp
- * @brief Contains pu::ui::Application class
- * @author XorTroll
- * @copyright XorTroll
+ * @author daviMassini
+ * @copyright NanoVG for Deko3D (Adubbz) - daviMassini
  */
 
 #ifndef ELM_TEXT_HPP

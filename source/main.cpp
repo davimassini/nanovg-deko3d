@@ -5,9 +5,11 @@
 #include <optional>
 #include <unistd.h>
 
-#include "elm/elm_Text.hpp"
 #include "nanovg.h"
 #include "nanovg_dk.h"
+
+#include "elm/elm_Rectangle.hpp"
+#include "elm/elm_Text.hpp"
 
 // #define USE_OPENGL
 #ifndef USE_OPENGL
@@ -168,7 +170,7 @@ public:
         cmdbuf.setViewports(0, {{0.0f, 0.0f, FramebufferWidth, FramebufferHeight, 0.0f, 1.0f}});
         cmdbuf.setScissors(0, {{0, 0, FramebufferWidth, FramebufferHeight}});
 
-        cmdbuf.clearColor(0, DkColorMask_RGBA, 1.0f, 1.0f, 1.0f, 1.0f);
+        cmdbuf.clearColor(0, DkColorMask_RGBA, 45.0f / 255.0f, 45.0f / 255.0f, 45.0f / 255.0f, 1.0f);
         cmdbuf.clearDepthStencil(true, 1.0f, 0xFF, 0);
 
         cmdbuf.bindRasterizerState(rasterizerState);
@@ -194,20 +196,23 @@ public:
 
         nvgBeginFrame(vg, FramebufferWidth, FramebufferHeight, 1.0f);
         {
-            if (showText && (time - textStartTime <= 5.0f)) {
-                elm::ui::Text::New(vg, "Teste de texto.",
-                                   "sans", 32, 0, 100,
-                                   nvgRGBA(0, 0, 0, 255),
-                                   NVG_ALIGN_MIDDLE | NVG_ALIGN_MIDDLE);
+            // if (showText && (time - textStartTime <= 5.0f)) {
+            //     elm::ui::Rectangle::New(vg, 0, 200, 300, 100);
+            //     elm::ui::Text::New(vg, "Teste de texto.", "sans",
+            //                        32, 30, 250, nvgRGBA(0, 0, 0, 255),
+            //                        NVG_ALIGN_MIDDLE | NVG_ALIGN_MIDDLE);
 
-                elm::ui::Text::New(vg, "Teste de texto.",
-                                   "bold", 26, 0, 300,
-                                   nvgRGBA(255, 0, 0, 255),
-                                   NVG_ALIGN_MIDDLE | NVG_ALIGN_MIDDLE);
+            //     elm::ui::Rectangle::New(vg, 1050, 0, 200, 100, nvgRGBA(240, 0, 0, 255));
+            // } else if (showText && (time - textStartTime > 5.0f)) {
+            //     showText = false;
+            // }
 
-            } else if (showText && (time - textStartTime > 5.0f)) {
-                showText = false;
-            }
+            elm::ui::Rectangle::New(vg, 0, 200, 300, 100);
+            elm::ui::Text::New(vg, "Teste de texto.", "sans",
+                               32, 30, 250, nvgRGBA(0, 0, 0, 255),
+                               NVG_ALIGN_MIDDLE | NVG_ALIGN_MIDDLE);
+
+            elm::ui::Rectangle::New(vg, 1050, 0, 200, 100, nvgRGBA(240, 0, 0, 255));
         }
         nvgEndFrame(vg);
 
