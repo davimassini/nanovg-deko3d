@@ -39,7 +39,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	nanovg-example
 BUILD		:=	build
-SOURCES     :=	source source/elm nanovg/shaders
+SOURCES     :=	source nanovg/shaders
 DATA		:=	data
 INCLUDES	:=	include nanovg/include
 ROMFS		:=	romfs

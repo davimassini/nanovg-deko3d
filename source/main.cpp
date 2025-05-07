@@ -5,9 +5,12 @@
 #include <optional>
 #include <unistd.h>
 
-#include "elm/elm_Commons.hpp"
 #include "nanovg.h"
 #include "nanovg_dk.h"
+
+#include "elm/elm_Image.hpp"
+#include "elm/elm_Rectangle.hpp"
+#include "elm/elm_Text.hpp"
 
 // #define USE_OPENGL
 #ifndef USE_OPENGL
@@ -74,10 +77,10 @@ class DkTest final : public CApplication {
     float prevTime;
     PadState pad;
 
-    bool showText = false; // Variável para controlar a visibilidade do texto
-    float textStartTime = 0.0f; // Tempo em que o texto começou a ser exibido
+    bool showText = false;
+    float textStartTime = 0.0f;
 
-    std::unique_ptr<elm::commons::Commons> commons;
+    std::unique_ptr<elm::ui::Image> image;
 
 public:
     DkTest() {
@@ -98,9 +101,7 @@ public:
         this->vg = nvgCreateDk(&*this->renderer, NVG_ANTIALIAS | NVG_STENCIL_STROKES);
 
         nvgCreateFont(vg, "sans", "romfs:/fonts/Roboto-Regular.ttf");
-        
-        // Inicializa commons dinamicamente
-        commons = std::make_unique<elm::commons::Commons>(vg);
+        nvgCreateFont(vg, "bold", "romfs:/fonts/Roboto-Bold.ttf");
 
         padConfigureInput(1, HidNpadStyleSet_NpadStandard);
         padInitializeDefault(&pad);
@@ -109,7 +110,8 @@ public:
     ~DkTest() {
         destroyFramebufferResources();
 
-        commons.reset();
+        // Destroy image, not causing leak memory
+        image.reset();
 
         nvgDeleteDk(vg);
         this->renderer.reset();
@@ -174,7 +176,7 @@ public:
         cmdbuf.setViewports(0, {{0.0f, 0.0f, FramebufferWidth, FramebufferHeight, 0.0f, 1.0f}});
         cmdbuf.setScissors(0, {{0, 0, FramebufferWidth, FramebufferHeight}});
 
-        cmdbuf.clearColor(0, DkColorMask_RGBA, 1.0f, 1.0f, 1.0f, 1.0f);
+        cmdbuf.clearColor(0, DkColorMask_RGBA, 45.0f / 255.0f, 45.0f / 255.0f, 45.0f / 255.0f, 1.0f);
         cmdbuf.clearDepthStencil(true, 1.0f, 0xFF, 0);
 
         cmdbuf.bindRasterizerState(rasterizerState);
@@ -186,7 +188,7 @@ public:
 
     void render(u64 ns, int keyPressed) {
         if (keyPressed) {
-            showText = true; // Ativa a exibição do texto
+            showText = true;                    // Ativa a exibição do texto
             textStartTime = ns / 1000000000.0f; // Armazena o tempo atual em segundos
         }
 
@@ -200,11 +202,24 @@ public:
 
         nvgBeginFrame(vg, FramebufferWidth, FramebufferHeight, 1.0f);
         {
-            if (showText && (time - textStartTime <= 5.0f)) {
-                commons->drawTextInRect("Teste de texto.", 0, 100, 400, 75);
-            } else if (showText && (time - textStartTime > 5.0f)) {
-                showText = false;
-            }
+            // if (showText && (time - textStartTime <= 5.0f)) {
+            //     elm::ui::Rectangle::New(vg, 0, 200, 300, 100);
+            //     elm::ui::Text::New(vg, "Teste de texto.", "sans",
+            //                        32, 30, 250, nvgRGBA(0, 0, 0, 255),
+            //                        NVG_ALIGN_MIDDLE | NVG_ALIGN_MIDDLE);
+
+            //     elm::ui::Rectangle::New(vg, 1050, 0, 200, 100, nvgRGBA(240, 0, 0, 255));
+            // } else if (showText && (time - textStartTime > 5.0f)) {
+            //     showText = false;
+            // }
+
+            elm::ui::Rectangle::New(vg, 0, 200, 300, 100);
+            elm::ui::Text::New(vg, "Text sample.", "sans", 32, 30, 250);
+
+            elm::ui::Rectangle::New(vg, 1050, 0, 200, 100, nvgRGBA(240, 0, 0, 255));
+
+            // Image needs to be initialized so that it can be destroyed later.
+            image = std::make_unique<elm::ui::Image>(vg, 540, 260, 200, 200, "romfs:/images/image1.jpg");
         }
         nvgEndFrame(vg);
 

@@ -39,8 +39,8 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	libnanovg
 BUILD		:=	build
-SOURCES		:=	source source/framework
-INCLUDES	:=	include include/nanovg include/nanovg/framework
+SOURCES		:=	source source/framework source/elm
+INCLUDES	:=	include include/nanovg include/nanovg/framework include/elm
 
 #---------------------------------------------------------------------------------
 # options for code generation
