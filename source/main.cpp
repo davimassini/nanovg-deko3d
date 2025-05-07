@@ -8,6 +8,7 @@
 #include "nanovg.h"
 #include "nanovg_dk.h"
 
+#include "elm/elm_Image.hpp"
 #include "elm/elm_Rectangle.hpp"
 #include "elm/elm_Text.hpp"
 
@@ -213,6 +214,8 @@ public:
                                NVG_ALIGN_MIDDLE | NVG_ALIGN_MIDDLE);
 
             elm::ui::Rectangle::New(vg, 1050, 0, 200, 100, nvgRGBA(240, 0, 0, 255));
+
+            elm::ui::Image::New(vg, 540, 260, 200, 200, "romfs:/images/image1.jpg");
         }
         nvgEndFrame(vg);
 
