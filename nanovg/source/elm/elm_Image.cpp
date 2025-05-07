@@ -18,10 +18,13 @@ Image::Image(NVGcontext *vg, float posX, float posY,
     drawImage();
 }
 
-Image::~Image() {}
+Image::~Image() {
+    if (vg && loadImage)
+        nvgDeleteImage(vg, loadImage);
+}
 
 void Image::drawImage() {
-    int loadImage = nvgCreateImage(vg, imagePath, 0);
+    loadImage = nvgCreateImage(vg, imagePath, 0);
     if (loadImage == 0) {
         printf("Error loading image: %s\n", imagePath);
         return;

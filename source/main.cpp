@@ -80,6 +80,8 @@ class DkTest final : public CApplication {
     bool showText = false;
     float textStartTime = 0.0f;
 
+    std::unique_ptr<elm::ui::Image> image;
+
 public:
     DkTest() {
         device = dk::DeviceMaker{}.setCbDebug(OutputDkDebug).create();
@@ -107,6 +109,9 @@ public:
 
     ~DkTest() {
         destroyFramebufferResources();
+
+        // Destroy image, not causing leak memory
+        image.reset();
 
         nvgDeleteDk(vg);
         this->renderer.reset();
@@ -209,13 +214,12 @@ public:
             // }
 
             elm::ui::Rectangle::New(vg, 0, 200, 300, 100);
-            elm::ui::Text::New(vg, "Teste de texto.", "sans",
-                               32, 30, 250, nvgRGBA(0, 0, 0, 255),
-                               NVG_ALIGN_MIDDLE | NVG_ALIGN_MIDDLE);
+            elm::ui::Text::New(vg, "Text sample.", "sans", 32, 30, 250);
 
             elm::ui::Rectangle::New(vg, 1050, 0, 200, 100, nvgRGBA(240, 0, 0, 255));
 
-            elm::ui::Image::New(vg, 540, 260, 200, 200, "romfs:/images/image1.jpg");
+            // Image needs to be initialized so that it can be destroyed later.
+            image = std::make_unique<elm::ui::Image>(vg, 540, 260, 200, 200, "romfs:/images/image1.jpg");
         }
         nvgEndFrame(vg);
 

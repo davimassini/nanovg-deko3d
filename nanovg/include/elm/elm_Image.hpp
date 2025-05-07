@@ -53,7 +53,7 @@ public:
      */
     Image(NVGcontext *vg, float posX, float posY,
           float width, float height, const char *imagePath,
-          float angle, float alpha);
+          float angle = 0.0f, float alpha = 1.0f);
 
     /**
      * @brief Destructor for the Image object.
@@ -160,9 +160,11 @@ private:
     float posY;
     float width;
     float height;
-    float angle;
     const char *imagePath;
+    float angle;
     float alpha;
+
+    int loadImage;
 };
 
 } // namespace elm::ui

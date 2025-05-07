@@ -33,7 +33,11 @@ public:
      * @param textAlign The alignment of the text (e.g., left, center, right).
      * @return A new Text object.
      */
-    static Text New(NVGcontext *vg, const char *text, const char *fontFace, int fontSize, float x, float y, NVGcolor textColor, int textAlign);
+    static Text New(NVGcontext *vg, const char *text,
+                    const char *fontFace, int fontSize,
+                    float x, float y,
+                    NVGcolor textColor = nvgRGBA(45, 45, 45, 255),
+                    int textAlign = NVG_ALIGN_LEFT | NVG_ALIGN_MIDDLE);
 
     /**
      * @brief Constructs a Text object.
@@ -46,7 +50,9 @@ public:
      * @param textColor The color of the text.
      * @param textAlign The alignment of the text (e.g., left, center, right).
      */
-    Text(NVGcontext *vg, const char *text, const char *fontFace, int fontSize, float x, float y, NVGcolor textColor, int textAlign);
+    Text(NVGcontext *vg, const char *text,
+         const char *fontFace, int fontSize,
+         float x, float y, NVGcolor textColor, int textAlign);
 
     /**
      * @brief Destructor for the Text object.
